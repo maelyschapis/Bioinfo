@@ -1,59 +1,84 @@
-EXAMEN BIOINFORMATIQUE MAÊLYS CHAPIS & MILA TRIPON
+EXAMEN BIOINFORMATIQUE MAËlLYS CHAPIS & MILA TRIPON
+
+Ce dépôt contient l’ensemble du travail réalisé pour l’examen de bioinformatique, incluant la préparation des fichiers, le contrôle qualité des données et l’analyse des séquences.
+
 # Vérification du directory et création dossier finalexam
 ```
 pwd
 ```
+Cette commande permet de s’assurer que nous sommes bien dans le répertoire $HOME de l’utilisateur, ce qui est important pour organiser correctement nos fichiers.
 
 # Part 1 — Linux basics 
 ## 1) Create a working directory called finalexam on your student account, in your $HOME directory. Copy the dataset from filesender link above.
-
+Ensuite, nous créons un dossier finalexam pour stocker toutes les données de l’examen :
 ```
 kdir finalexam
+```
+Nous copions ensuite les fichiers nécessaires depuis le serveur filesender :
+```
 scp SRR034310_10pc.fastq /home/2025LBISM2/e22402344/finalexam
 scp Details_Barcode_Population_SRR034310.txt /home/2025LBISM2/e22402344/finalexam
 scp Reference_genome_chrI.fasta /home/2025LBISM2/e22402344/finalexam
 ```
+Cette étape permet de centraliser toutes les données dans un seul dossier pour faciliter les analyses ultérieures.
 
 ## 2) Explore file content with bash commands using and report: 
+Pour comprendre la structure des fichiers, nous utilisons des commandes comme cat et head :
 ```
 cat SRR034310_10pc.fastq | head # pour voir à quoi ressemble le fichier
 ```
+Cette commande affiche les premières lignes du fichier FASTQ pour vérifier le format et le type de données contenues.
+
 ### 2.1) How many lines are in the fastq file?
 ```
-wc -l < SRR034310_10pc.fastq # IL Y A 356412
+wc -l < SRR034310_10pc.fastq 
 ```
+Résultat : 356412 lignes
+Comme chaque séquence FASTQ occupe 4 lignes (identifiant, séquence, ligne intermédiaire, qualité), cela permet de calculer le nombre total de séquences.
+
 ### 2.2) What is the read length?
 ```
 22402344@ed55:~$ nseq=$((`wc -l < SRR034310_10pc.fastq / 4))
-e22402344@ed55:~$ echo $nseq # Il y a 897003 séquences dans ce fichier
+e22402344@ed55:~$ echo $nseq
 ```
+Résultat : 89703 séquences
+Cela montre que le fichier contient presque 90 000 lectures, ce qui est suffisant pour effectuer des analyses statistiques fiables.
+
 ### 2.3) How many barcodes are in Details_Barcode_Population_SRR034310?
 ```
-wc -l < Details_Barcode_Population_SRR034310.txt # Il y a 16 barcodes
+wc -l < Details_Barcode_Population_SRR034310.txt
 ```
+Résultat : 16 barcodes
+Chaque barcode correspond à une population ou à un échantillon différent, ce qui permettra d’identifier l’origine des séquences.
 
 # Part 2 — Quality control 
 ```
 home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
 ```
-# résultats html
-### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
-POUR SEQUENCE LENGHT DISTRIBUTION : Il y a une valeur maxaimale autour de 36 pb. Toutes nos séquences sont de la même longueur. 
-POUR QUALITY DROP AT 5' AND 3' ENDS OF READS : La qualité est bonne entre 11 et 22 pb. Nous avons donc bien un drop. 
-POUR LA PRESENCE D'ADAPTATEURS : Nous n'avons pas de présence d'adaptateur.     
-POUR L'OVERREPRESENTED SEQUENCES : Nous avons 3 séquences listées et sur-représentées dans notre fichier de données.  
+Cette commande génère un rapport HTML détaillé sur la qualité des lectures, qui peut être visualisé pour identifier des problèmes éventuels.
 
-file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.html
+### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
+- Sequence length distribution : La longueur des séquences est uniforme, avec une valeur maximale autour de 36 pb.
+
+- Quality drop at 5' and 3' ends : La qualité des séquences est globalement bonne entre 11 et 22 pb, mais on observe une baisse aux extrémités.
+
+- Présence d’adaptateurs : Aucun adaptateur détecté.
+
+- Overrepresented sequences : Trois séquences sont sur-représentées dans le fichier, ce qui peut indiquer des biais techniques ou biologiques.
+
+Rapport complet : file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.html
 
 ### 1.2) which restriction enzyme was used to create these data?
-L'enzyme de restriction utilisée pour ces données est sbf1. Pour le savoir, nous avons regardé le pourcentage de "ACTG" dans l'onglet "per base sequence content". En effet la séquence suivante "TGCA GG" correspond à sbf1.
+L’enzyme utilisée pour générer ces données est SbfI.
+Cette information est déduite à partir du pourcentage de nucléotides dans l’onglet "per base sequence content" : la séquence TGCA GG correspond au site de coupure de SbfI.
 
 ### 1.3) What is the 4 nt sequence preceeding the enzyme overhang?
-La séquence qui précède l'enzyme de restriction est : TGCA
+La séquence précédant le site de l’enzyme de restriction est : TGCA
 
 # Part 3 — Demultiplexing using barcodes
 
 ## 1) Using simple grep and sed, create 16 new FASTQ files, one for each sample, based on Details_Barcode_Population_SRR034310. Name the demultiplexed files as, for ex, BearPaw1.fastq (for barcode CCCC). 
+Pour créer un fichier FASTQ pour chaque échantillon, nous avons utilisé les commandes grep et sed :
 ```
 grep -B1 -A2 "^CCAA" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > BearPaw2.fastq
 grep -B1 -A2 "^CCCC" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > BearPaw1.fastq 
@@ -72,7 +97,14 @@ grep -B1 -A2 "^GGAA" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough6.f
 grep -B1 -A2 "^GGTT" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough7.fastq 
 grep -B1 -A2 "^GGCC" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough8.fastq 
 ```
+Explication :
+- grep "^BARCODE" permet de sélectionner les séquences commençant par un barcode spécifique.
+- B1 -A2 inclut une ligne avant et deux lignes après le match, correspondant aux quatre lignes de chaque lecture FASTQ (identifiant, séquence, ligne intermédiaire, qualité).
+- sed 's/@SRR/@SRR/g' sert ici à corriger ou standardiser l’entête des séquences.
+- Chaque fichier créé correspond à un échantillon identifié par son barcode, par exemple BearPaw1.fastq pour le barcode CCCC.
+
 ## 2)  Nous comptons le nombre de lecture de chaque fichier compter le nombre de reads 
+Pour vérifier que le démultiplexage a fonctionné correctement, nous comptons le nombre de lectures de chaque fichier FASTQ :
 ```
 grep "^>SRR" BearPaw1.fastq | wc -l # 15802 lectures
 grep "^>SRR" BearPaw2.fastq | wc -l # 15754 lectures
@@ -91,7 +123,13 @@ grep "^>SRR" RabbitSlough6.fastq | wc -l # 64961 lectures
 grep "^>SRR" RabbitSlough7.fastq | wc -l # 98983 lectures
 grep "^>SRR" RabbitSlough8.fastq | wc -l # 55038 lectures
 ```
+Explication :
+- grep "^>SRR" recherche les lignes d’identifiant de chaque séquence.
+- wc -l compte le nombre de lignes correspondantes, soit le nombre total de lectures dans le fichier.
+- Cela permet de s’assurer que toutes les séquences ont été correctement assignées à chaque échantillon.
+
 ## 3) Nous enlevons les 4 premiers nucléotides qui correpsondent aux barcodes : 
+Les quatre premiers nucléotides de chaque séquence correspondent au barcode. Nous les retirons avec seqtk pour préparer les séquences pour les analyses ultérieures :
 ```
 seqtk trimfq -b 4 BearPaw1.fastq > BearPaw1trim.fastq
 seqtk trimfq -b 4 BearPaw2.fastq > BearPaw2trim.fastq
@@ -110,17 +148,27 @@ seqtk trimfq -b 4 RabbitSlough6.fastq > RabbitSlough6trim.fastq
 seqtk trimfq -b 4 RabbitSlough7.fastq > RabbitSlough7trim.fastq
 seqtk trimfq -b 4 RabbitSlough8.fastq > RabbitSlough8trim.fastq
 ```
-Vérification d'un des fichiers pour savoir si tout fonctionne 
+Explication :
+- L’option -b 4 supprime les 4 premiers nucléotides de chaque lecture.
+- Les fichiers résultants (*_trim.fastq) contiennent les séquences sans barcode, prêtes pour un alignement ou un contrôle qualité.
+
+Pour vérifier que la suppression des barcodes a bien fonctionné :
 ```
 RabbitSlough8_trim.fatq | head
 ```
+Cette commande affiche les premières lignes du fichier trimé, permettant de confirmer que les barcodes ont été retirés et que le format FASTQ est correct.
+
 # Part 4 — Mapping to a reference genome
 ## 1) Index the reference
+Cette section décrit l’alignement des séquences sur le génome de référence, suivi de la conversion et de l’indexation des fichiers pour analyses ultérieures.
+Avant d’aligner les séquences, il est nécessaire de créer un index du génome de référence :
 ```
 bwa-mem2 index Reference_genome_chrI.fasta
 ```
+La commande bwa-mem2 index prépare le fichier FASTA pour l’alignement. L’index permet à l’algorithme BWA de retrouver rapidement les positions correspondantes sur le génome.
 
 ## 2) Map each demultiplexed FASTQ
+Chaque fichier FASTQ trimé est aligné sur le génome de référence :
 ```
 bwa-mem2 mem Reference_genome_chrI.fasta BearPaw1trim.fastq > BearPaw1.sam
 bwa-mem2 mem Reference_genome_chrI.fasta BearPaw2trim.fastq > BearPaw2.sam
@@ -139,7 +187,10 @@ bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough6trim.fastq > RabbitSlough6
 bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough7trim.fastq > RabbitSlough7.sam
 bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough8trim.fastq > RabbitSlough8.sam
 ```
+La commande "bwa-mem2 mem" effectue l’alignement des séquences courtes sur le génome de référence. Le résultat est un fichier SAM (Sequence Alignment/Map) qui contient toutes les positions de correspondance, la qualité de l’alignement, et d’autres informations essentielles.
+
 ## 3) Convert to BAM, sort, index
+Les fichiers SAM sont volumineux et non optimisés pour les analyses. Nous les convertissons en BAM, un format compressé et trié, puis nous les indexons.
 ```
 samtools view -bS BearPaw1.sam > BearPaw1.bam
 samtools sort BearPaw1.bam -o BearPaw1_sorted.bam
@@ -205,15 +256,16 @@ samtools view -bS RabbitSlough8.sam > RabbitSlough8.bam
 samtools sort RabbitSlough8.bam -o RabbitSlough8_sorted.bam
 samtools index RabbitSlough8_sorted.bam
 ```
-Nous mettons tout dans le même fichier 
+La commande "samtools view -bS" permet de convertire le SAM en BAM. "Samtools sort" permete quant à lui de trier les lectures par position sur le génome pour faciliter les analyses et la visualisation. "Samtools index" crée un fichier index (.bai) qui permet d’accéder rapidement à des positions spécifiques dans le BAM.
 
+Une fois tous les fichiers alignés, triés et indexés, nous les rassemblons dans notre répertoire personnel pour analyses ultérieures :
  ```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/*.bam' ~ /home/2025LBISM2/e22402344/
 ```
 
 ## 4) Compute mapping statistics
+Après avoir aligné les séquences sur le génome de référence, il est important d’évaluer la qualité et l’efficacité de l’alignement. Pour cela, nous utilisons samtools flagstat.
 ### 4.1) Mapping stats summarized: % mapped, number of reads, number of duplicates (if info available)
-Le premier résultat est le pourcentage, et le second est le nombre de lecture 
 ```
 samtools flagstat BearPaw1_sorted.bam # 15802 & 1092
 samtools flagstat BearPaw2_sorted.bam # 15554 & 1144
@@ -233,22 +285,61 @@ samtools flagstat RabbitSlough6_sorted.bam # 64961 & 4862
 samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264
 samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100
 ```
+Lee ""samtools flagstat" fournit un résumé complet des alignements dans le fichier BAM. Les principaux indicateurs sont :
+- % mapped : pourcentage de lectures alignées correctement sur le génome de référence.
+- Number of reads : nombre total de lectures dans le fichier BAM.
+- Number of duplicates : nombre de lectures dupliquées (lorsque l’information est disponible), souvent liées à la PCR ou à la préparation de la librairie.
 
-Le mapping est le pourcentage d'alignement, correspond à la proportion de lectures (reads) d'un fichier FASTAQ qui ont été correctement alignées sur un génome de référence. EN pratique, avec samtools flagstat, nous obtenons 2 nombre principaux. LE premie rest le nombre de lectures totales dans el BAM, et le second est le nombre de lectures correctement mappées. Le mapping se calcul par = read mappées / reads totales * 100. 
-Les génomesmarins ont souvent un mapping plus faible pour plusieurs raisons biologiques et techniques. En effet, la diversité génomique est élevvé. Les populations marines ont souvent des populations très polymorphes et les génomes de références ne couvrent pas toutes les vaiantes, donc moins de lectures vont s'aligner. De ^lus, les répétitions sont abondantes. Les séquences sont divergentes, si la référnce utilisée n'est pas exactement de la même population ou espèce, les divergences gééntiques font baisser le mapping. Enfin, la qualité des lectures et la contamination peuvent influencer de faible résultat de mapping (provenant de virus/bactérie marins). 
-   
+
+Le mapping correspond au pourcentage d’alignement, c’est-à-dire la proportion de lectures (reads) d’un fichier FASTQ qui ont été correctement alignées sur un génome de référence. En pratique, lorsque nous utilisons samtools flagstat, nous obtenons deux nombres principaux :
+- Nombre total de lectures dans le fichier BAM (toutes les lectures présentes dans le fichier aligné).
+- Nombre de lectures correctement mappées (celles qui se sont alignées de façon fiable sur le génome de référence).
+
+Le pourcentage de mapping se calcule ainsi : Mapping (%) = (lectures mappées / lectures totales)×100
+
+Chez les génomes marins, le pourcentage de mapping est souvent plus faible que pour d’autres organismes, pour plusieurs raisons biologiques et techniques :
+- Diversité génomique élevée :
+Les populations marines présentent un polymorphisme génétique important. Le génome de référence ne représente souvent qu’une seule population ou un seul individu, donc de nombreuses variantes présentes dans les échantillons ne s’aligneront pas correctement.
+- Répétitions abondantes :
+Les génomes marins contiennent de nombreuses séquences répétées ou transposons. Les lectures issues de ces régions peuvent s’aligner de manière ambiguë, ce qui fait baisser le mapping effectif.
+- Divergence génétique entre populations ou espèces :
+Si la référence utilisée n’est pas exactement de la même population ou espèce que l’échantillon, les différences nucléotidiques (mutations, insertions, délétions) réduisent le nombre de lectures alignées.
+- Qualité des lectures et contamination :
+Les lectures de mauvaise qualité peuvent échouer à s’aligner. De plus, dans les échantillons marins, il est courant de trouver des contaminations par des virus, bactéries ou autres organismes marins, ce qui génère des séquences qui ne correspondent pas au génome cible.
+
+Le mapping est donc un indicateur clé de la qualité des données et de la compatibilité entre les lectures et le génome de référence. Les faibles taux de mapping dans les génomes marins sont donc le reflet d’une combinaison de diversité génétique, de répétitions et de facteurs techniques liés à l’échantillonnage et à la qualité des séquences.
+
+Lorsqu’on analyse les fichiers BAM après mapping, samtools flagstat fournit parfois le nombre de lectures dupliquées. Les lectures dupliquées sont des séquences identiques présentes plusieurs fois dans le fichier, et elles peuvent apparaître pour plusieurs raisons :
+- Amplification PCR :
+Lors de la préparation de la librairie, certaines fragments d’ADN sont amplifiés plusieurs fois. Si une même séquence est amplifiée à plusieurs reprises, elle apparaît comme un duplicate.
+- Répétitions génomiques :
+Dans les régions répétées du génome, il est possible que des lectures provenant de différentes copies se retrouvent identiques, donnant l’impression de duplications.
+- Séquences biologiquement réelles :
+Parfois, plusieurs copies identiques peuvent exister naturellement dans l’échantillon, surtout dans les génomes polyploïdes ou fortement répétitifs.
+
+Impact des duplications sur l’interprétation des données
+- Surestimation de la couverture : Les duplications peuvent donner l’impression qu’une région du génome est surreprésentée, alors qu’il s’agit de copies artificielles générées par la PCR.
+- Biais dans les analyses quantitatives : Si l’on mesure l’abondance de séquences ou l’expression génétique, les duplications peuvent fausser les résultats.
+- Filtres nécessaires : Dans de nombreux pipelines bioinformatiques, on supprime ou marque les duplications avant d’effectuer des analyses de variant calling, de couverture ou de diversité génétique.
+
+Remarque pour les génomes marins : Les faibles taux de mapping combinés à des duplications modérées sont fréquents. La diversité génétique et la présence de séquences répétées accentuent ce phénomène, et il est important de les considérer pour éviter des biais dans l’interprétation des données.
 
 # Part 5 — Calling SNPs
+Cette partie décrit la détection de SNPs (Single Nucleotide Polymorphisms) à partir des fichiers BAM alignés sur le génome de référence.
+
 ## 1) Index your reference
+Avant de réaliser le variant calling, nous indexons le fichier FASTA :
 ```
 samtools faidx Reference_genome_chrI.fasta
 ```
 
 ## 2) Create a vcf folder and enter it. 
+Nous centralisons tous les fichiers VCF dans un dossier dédié :
 ```
 mkdir vcf
 cd vcf
 ```
+
 ## 3) Call variants from the two BAM files
 ```
 bcftools mpileup -Ou -f ../Reference_genome_chrI.fasta ../BearPaw1_sorted.bam ../BearPaw2_sorted.bam ../BearPaw3_sorted.bam ../BearPaw4_sorted.bam ../BearPaw5_sorted.bam ../BearPaw6_sorted.bam ../BearPaw7_sorted.bam ../BearPaw8_sorted.bam ../RabbitSlough1_sorted.bam ../RabbitSlough2_sorted.bam ../RabbitSlough3_sorted.bam ../RabbitSlough4_sorted.bam ../RabbitSlough5_sorted.bam ../RabbitSlough6_sorted.bam ../RabbitSlough7_sorted.bam ../RabbitSlough8_sorted.bam | bcftools call -mv -Ov -o raw_variants.vcf
@@ -256,20 +347,36 @@ bcftools mpileup -Ou -f ../Reference_genome_chrI.fasta ../BearPaw1_sorted.bam ..
 vcftools --vcf raw_variants.vcf --freq 
 vcftools --vcf raw_variants.vcf --freq
 ```
+La commande "bcftools mpileup" génère un "pileup" de toutes les lectures alignées, calculant la couverture et les bases présentes à chaque position du génome. L’option -f indique le fichier de référence. "bcftools call -mv" appelle les variants :
+- m pour le modèle multi-allelic.
+- v pour ne sortir que les positions variant (SNPs et indels).
+- Ov indique que le fichier de sortie est au format VCF classique.
+
 ## 3.1) How many SNPs did you call ? 
-Après cette première étape, il y a 127 SNPs
+Après cette étape, nous obtenons 127 SNPs dans le fichier raw_variants.vcf.
 
 ## 4)  Using vfctools, filter SNPs, using : vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered. Explain what this command is doing. How many SNPs remain ?
 ```
 vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered
 ```
-Après cette étape de filtrage, il ne reste plus que 4 SNPs. Cette commande présente le "mindp" = 5, qui est la profondeur de lecture de au moins 5. PUis, le "max-missing" de 100% correspond au SNP gardés si ils sont génotypés chez tous les indidus. Enfin, le "min-allèle" et le "max-allèle" corespondent aux minimum au maximum d'allèles utilisées qui sont de 2. 
+Concernant les comamndes utilisées : 
+- minDP 5 : conserve seulement les SNPs dont la profondeur de lecture est d’au moins 5, pour s’assurer que la variation est bien supportée par plusieurs lectures.
+- max-missing 1 : conserve uniquement les SNPs présents chez tous les individus (100% des individus génotypés).
+- min-alleles 2 et --max-alleles 2 : conserve uniquement les SNPs bi-alloéliques, c’est-à-dire avec exactement deux variantes détectées.
+- recode --out filtered : génère un nouveau fichier VCF filtré.
+
+Après ce filtrage strict, il ne reste que 4 SNPs fiables.
 
 ## 5) Using vfctools, compute the allelic frequence and the FST per sites
 ```
 vcftools --vcf raw_variants.vcf --freq  --out allele_freqs
 vcftools --vcf raw_variants.vcf --weir-fst-pop popbear.txt --weir-fst-pop poprabbit.txt --out fst_pop
 ```
+Cette commande calcule la fréquence de chaque allèle pour tous les SNPs dans chaque échantillon ou population Les résultats sont enregistrés dans un fichier .frq, utile pour les analyses de diversité génétique. 
+- weir-fst-pop permet de calculer le FST (indice de différenciation génétique) entre deux populations :
+- popbear.txt : liste des individus de la population BearPaw.
+- poprabbit.txt : liste des individus de la population RabbitSlough.
+- Le fichier de sortie contient le FST pour chaque SNP, indiquant le degré de divergence génétique entre populations.
 
 Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commande suivante : 
 ```
@@ -279,7 +386,6 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 
 ## 6) Visualize in R allele frequencies and FST values
 ### Les résultats des graphiques se truvent dans les fichiers joins rendu avec le reste de l'examen. 
-
 
 # Partie 6 - Concept interpretation
 ## 1) What is the difference between coverage and depth of coverage?
