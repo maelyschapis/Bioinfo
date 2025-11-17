@@ -1,6 +1,8 @@
 EXAMEN BIOINFORMATIQUE MAÊLYS CHAPIS & MILA TRIPON
 # Vérification du directory et création dossier finalexam
+```
 pwd
+```
 
 # Part 1 — Linux basics 
 ## 1) Create a working directory called finalexam on your student account, in your $HOME directory. Copy the dataset from filesender link above.
@@ -13,22 +15,27 @@ scp Reference_genome_chrI.fasta /home/2025LBISM2/e22402344/finalexam
 ```
 
 ## 2) Explore file content with bash commands using and report: 
+```
 cat SRR034310_10pc.fastq | head # pour voir à quoi ressemble le fichier
-
+```
 ### 2.1) How many lines are in the fastq file?
+```
 wc -l < SRR034310_10pc.fastq # IL Y A 356412
-
+```
 ### 2.2) What is the read length?
+```
 22402344@ed55:~$ nseq=$((`wc -l < SRR034310_10pc.fastq / 4))
 e22402344@ed55:~$ echo $nseq # Il y a 897003 séquences dans ce fichier
-
+```
 ### 2.3) How many barcodes are in Details_Barcode_Population_SRR034310?
+```
 wc -l < Details_Barcode_Population_SRR034310.txt # Il y a 16 barcodes
-
+```
 
 # Part 2 — Quality control 
+```
 home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
-
+```
 # résultats html
 ### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
 #### POUR SEQUENCE LENGHT DISTRIBUTION : Il y a une valeur maxaimale autour de 36 pb. Toutes nos séquences sont de la même longueur. 
@@ -47,7 +54,7 @@ home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
 # Part 3 — Demultiplexing using barcodes
 
 ## 1) Using simple grep and sed, create 16 new FASTQ files, one for each sample, based on Details_Barcode_Population_SRR034310. Name the demultiplexed files as, for ex, BearPaw1.fastq (for barcode CCCC). 
-
+```
 grep -B1 -A2 "^CCAA" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > BearPaw2.fastq
 grep -B1 -A2 "^CCCC" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > BearPaw1.fastq 
 grep -B1 -A2 "^CCTT" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > BearPaw3.fastq
@@ -64,8 +71,9 @@ grep -B1 -A2 "^GGGG" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough5.f
 grep -B1 -A2 "^GGAA" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough6.fastq 
 grep -B1 -A2 "^GGTT" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough7.fastq 
 grep -B1 -A2 "^GGCC" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough8.fastq 
-
+```
 ## 2)  Nous comptons le nombre de lecture de chaque fichier compter le nombre de reads 
+```
 grep "^>SRR" BearPaw1.fastq | wc -l # 15802 lectures
 grep "^>SRR" BearPaw2.fastq | wc -l # 15754 lectures
 grep "^>SRR" BearPaw3.fastq | wc -l # 15314 lectures
@@ -82,8 +90,9 @@ grep "^>SRR" RabbitSlough5.fastq | wc -l # 36019 lectures
 grep "^>SRR" RabbitSlough6.fastq | wc -l # 64961 lectures
 grep "^>SRR" RabbitSlough7.fastq | wc -l # 98983 lectures
 grep "^>SRR" RabbitSlough8.fastq | wc -l # 55038 lectures
-
+```
 ## 3) Nous enlevons les 4 premiers nucléotides qui correpsondent aux barcodes : 
+```
 seqtk trimfq -b 4 BearPaw1.fastq > BearPaw1trim.fastq
 seqtk trimfq -b 4 BearPaw2.fastq > BearPaw2trim.fastq
 seqtk trimfq -b 4 BearPaw3.fastq > BearPaw3trim.fastq
@@ -100,15 +109,19 @@ seqtk trimfq -b 4 RabbitSlough5.fastq > RabbitSlough5trim.fastq
 seqtk trimfq -b 4 RabbitSlough6.fastq > RabbitSlough6trim.fastq
 seqtk trimfq -b 4 RabbitSlough7.fastq > RabbitSlough7trim.fastq
 seqtk trimfq -b 4 RabbitSlough8.fastq > RabbitSlough8trim.fastq
-
-### Vérification d'un des fichiers pour svaoir si tout fonctionne 
+```
+### Vérification d'un des fichiers pour savoir si tout fonctionne 
+```
 RabbitSlough8_trim.fatq | head
-
+```
 # Part 4 — Mapping to a reference genome
 ## 1) Index the reference
+```
 bwa-mem2 index Reference_genome_chrI.fasta
+```
 
 ## 2) Map each demultiplexed FASTQ
+```
 bwa-mem2 mem Reference_genome_chrI.fasta BearPaw1trim.fastq > BearPaw1.sam
 bwa-mem2 mem Reference_genome_chrI.fasta BearPaw2trim.fastq > BearPaw2.sam
 bwa-mem2 mem Reference_genome_chrI.fasta BearPaw3trim.fastq > BearPaw3.sam
@@ -125,8 +138,9 @@ bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough5trim.fastq > RabbitSlough5
 bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough6trim.fastq > RabbitSlough6.sam
 bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough7trim.fastq > RabbitSlough7.sam
 bwa-mem2 mem Reference_genome_chrI.fasta RabbitSlough8trim.fastq > RabbitSlough8.sam
-
+```
 ## 3) Convert to BAM, sort, index
+```
 samtools view -bS BearPaw1.sam > BearPaw1.bam
 samtools sort BearPaw1.bam -o BearPaw1_sorted.bam
 samtools index BearPaw1_sorted.bam
@@ -190,13 +204,17 @@ samtools index RabbitSlough7_sorted.bam
 samtools view -bS RabbitSlough8.sam > RabbitSlough8.bam
 samtools sort RabbitSlough8.bam -o RabbitSlough8_sorted.bam
 samtools index RabbitSlough8_sorted.bam
+```
 
-### Nous mettons tout dans le même fichier  
+### Nous mettons tout dans le même fichier 
+```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/*.bam' ~ /home/2025LBISM2/e22402344/
+```
 
 ## 4) Compute mapping statistics
 ### 4.1) Mapping stats summarized: % mapped, number of reads, number of duplicates (if info available)
 #### Le premier résultat est le pourcentage, et le second est le nombre de lecture 
+```
 samtools flagstat BearPaw1_sorted.bam # 15802 & 1092
 samtools flagstat BearPaw2_sorted.bam # 15554 & 1144
 samtools flagstat BearPaw3_sorted.bam # 15314 & 1192
@@ -214,6 +232,7 @@ samtools flagstat RabbitSlough5_sorted.bam # 136019 & 9453
 samtools flagstat RabbitSlough6_sorted.bam # 64961 & 4862
 samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264
 samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100
+```
 
 #### Le mapping est le pourcentage d'alignement, correspond à la proportion de lectures (reads) d'un fichier FASTAQ qui ont été correctement alignées sur un génome de référence. EN pratique, avec samtools flagstat, nous obtenons 2 nombre principaux. LE premie rest le nombre de lectures totales dans el BAM, et le second est le nombre de lectures correctement mappées. Le mapping se calcul par = read mappées / reads totales * 100. 
 #### Les génomesmarins ont souvent un mapping plus faible pour plusieurs raisons biologiques et techniques. En effet, la diversité génomique est élevvé. Les populations marines ont souvent des populations très polymorphes et les génomes de références ne couvrent pas toutes les vaiantes, donc moins de lectures vont s'aligner. De ^lus, les répétitions sont abondantes. Les séquences sont divergentes, si la référnce utilisée n'est pas exactement de la même population ou espèce, les divergences gééntiques font baisser le mapping. Enfin, la qualité des lectures et la contamination peuvent influencer de faible résultat de mapping (provenant de virus/bactérie marins). 
@@ -221,31 +240,42 @@ samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100
 
 # Part 5 — Calling SNPs
 ## 1) Index your reference
-samtools faidx Reference_genome_chrI.fasta 
+```
+samtools faidx Reference_genome_chrI.fasta
+```
 
 ## 2) Create a vcf folder and enter it. 
+```
 mkdir vcf
 cd vcf
-
+```
 ## 3) Call variants from the two BAM files
+```
 bcftools mpileup -Ou -f ../Reference_genome_chrI.fasta ../BearPaw1_sorted.bam ../BearPaw2_sorted.bam ../BearPaw3_sorted.bam ../BearPaw4_sorted.bam ../BearPaw5_sorted.bam ../BearPaw6_sorted.bam ../BearPaw7_sorted.bam ../BearPaw8_sorted.bam ../RabbitSlough1_sorted.bam ../RabbitSlough2_sorted.bam ../RabbitSlough3_sorted.bam ../RabbitSlough4_sorted.bam ../RabbitSlough5_sorted.bam ../RabbitSlough6_sorted.bam ../RabbitSlough7_sorted.bam ../RabbitSlough8_sorted.bam | bcftools call -mv -Ov -o raw_variants.vcf
 
 vcftools --vcf raw_variants.vcf --freq 
 vcftools --vcf raw_variants.vcf --freq
+```
 ## 3.1) How many SNPs did you call ? 
 #### Après cette première étape, il y a 127 SNPs
 
 ## 4)  Using vfctools, filter SNPs, using : vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered. Explain what this command is doing. How many SNPs remain ?
-vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered 
+```
+vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered
+```
 #### Après cette étape de filtrage, il ne reste plus que 4 SNPs. Cette commande présente le "mindp" = 5, qui est la profondeur de lecture de au moins 5. PUis, le "max-missing" de 100% correspond au SNP gardés si ils sont génotypés chez tous les indidus. Enfin, le "min-allèle" et le "max-allèle" corespondent aux minimum au maximum d'allèles utilisées qui sont de 2. 
 
 ## 5) Using vfctools, compute the allelic frequence and the FST per sites
+```
 vcftools --vcf raw_variants.vcf --freq  --out allele_freqs
 vcftools --vcf raw_variants.vcf --weir-fst-pop popbear.txt --weir-fst-pop poprabbit.txt --out fst_pop
+```
 
 ##### Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commande suivante : 
+```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.frq' ~ /home/2025LBISM2/e22402344/
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.vcf' ~ /home/2025LBISM2/e22402344/
+```
 
 ## 6) Visualize in R allele frequencies and FST values
 ### Les résultats des graphiques se truvent dans les fichiers joins rendu avec le reste de l'examen. 
