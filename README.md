@@ -38,18 +38,18 @@ home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
 ```
 # résultats html
 ### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
-#### POUR SEQUENCE LENGHT DISTRIBUTION : Il y a une valeur maxaimale autour de 36 pb. Toutes nos séquences sont de la même longueur. 
-#### POUR QUALITY DROP AT 5' AND 3' ENDS OF READS : La qualité est bonne entre 11 et 22 pb. Nous avons donc bien un drop. 
-#### POUR LA PRESENCE D'ADAPTATEURS : Nous n'avons pas de présence d'adaptateur.     
-#### POUR L'OVERREPRESENTED SEQUENCES : Nous avons 3 séquences listées et sur-représentées dans notre fichier de données.  
+POUR SEQUENCE LENGHT DISTRIBUTION : Il y a une valeur maxaimale autour de 36 pb. Toutes nos séquences sont de la même longueur. 
+POUR QUALITY DROP AT 5' AND 3' ENDS OF READS : La qualité est bonne entre 11 et 22 pb. Nous avons donc bien un drop. 
+POUR LA PRESENCE D'ADAPTATEURS : Nous n'avons pas de présence d'adaptateur.     
+POUR L'OVERREPRESENTED SEQUENCES : Nous avons 3 séquences listées et sur-représentées dans notre fichier de données.  
 
-#### file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.html
+file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.html
 
 ### 1.2) which restriction enzyme was used to create these data?
-#### L'enzyme de restriction utilisée pour ces données est sbf1. Pour le savoir, nous avons regardé le pourcentage de "ACTG" dans l'onglet "per base sequence content". En effet la séquence suivante "TGCA GG" correspond à sbf1.
+L'enzyme de restriction utilisée pour ces données est sbf1. Pour le savoir, nous avons regardé le pourcentage de "ACTG" dans l'onglet "per base sequence content". En effet la séquence suivante "TGCA GG" correspond à sbf1.
 
 ### 1.3) What is the 4 nt sequence preceeding the enzyme overhang?
-#### La séquence qui précède l'enzyme de restriction est : TGCA
+La séquence qui précède l'enzyme de restriction est : TGCA
 
 # Part 3 — Demultiplexing using barcodes
 
@@ -110,7 +110,7 @@ seqtk trimfq -b 4 RabbitSlough6.fastq > RabbitSlough6trim.fastq
 seqtk trimfq -b 4 RabbitSlough7.fastq > RabbitSlough7trim.fastq
 seqtk trimfq -b 4 RabbitSlough8.fastq > RabbitSlough8trim.fastq
 ```
-### Vérification d'un des fichiers pour savoir si tout fonctionne 
+Vérification d'un des fichiers pour savoir si tout fonctionne 
 ```
 RabbitSlough8_trim.fatq | head
 ```
@@ -205,15 +205,15 @@ samtools view -bS RabbitSlough8.sam > RabbitSlough8.bam
 samtools sort RabbitSlough8.bam -o RabbitSlough8_sorted.bam
 samtools index RabbitSlough8_sorted.bam
 ```
+Nous mettons tout dans le même fichier 
 
-### Nous mettons tout dans le même fichier 
-```
+ ```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/*.bam' ~ /home/2025LBISM2/e22402344/
 ```
 
 ## 4) Compute mapping statistics
 ### 4.1) Mapping stats summarized: % mapped, number of reads, number of duplicates (if info available)
-#### Le premier résultat est le pourcentage, et le second est le nombre de lecture 
+Le premier résultat est le pourcentage, et le second est le nombre de lecture 
 ```
 samtools flagstat BearPaw1_sorted.bam # 15802 & 1092
 samtools flagstat BearPaw2_sorted.bam # 15554 & 1144
@@ -234,8 +234,8 @@ samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264
 samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100
 ```
 
-#### Le mapping est le pourcentage d'alignement, correspond à la proportion de lectures (reads) d'un fichier FASTAQ qui ont été correctement alignées sur un génome de référence. EN pratique, avec samtools flagstat, nous obtenons 2 nombre principaux. LE premie rest le nombre de lectures totales dans el BAM, et le second est le nombre de lectures correctement mappées. Le mapping se calcul par = read mappées / reads totales * 100. 
-#### Les génomesmarins ont souvent un mapping plus faible pour plusieurs raisons biologiques et techniques. En effet, la diversité génomique est élevvé. Les populations marines ont souvent des populations très polymorphes et les génomes de références ne couvrent pas toutes les vaiantes, donc moins de lectures vont s'aligner. De ^lus, les répétitions sont abondantes. Les séquences sont divergentes, si la référnce utilisée n'est pas exactement de la même population ou espèce, les divergences gééntiques font baisser le mapping. Enfin, la qualité des lectures et la contamination peuvent influencer de faible résultat de mapping (provenant de virus/bactérie marins). 
+Le mapping est le pourcentage d'alignement, correspond à la proportion de lectures (reads) d'un fichier FASTAQ qui ont été correctement alignées sur un génome de référence. EN pratique, avec samtools flagstat, nous obtenons 2 nombre principaux. LE premie rest le nombre de lectures totales dans el BAM, et le second est le nombre de lectures correctement mappées. Le mapping se calcul par = read mappées / reads totales * 100. 
+Les génomesmarins ont souvent un mapping plus faible pour plusieurs raisons biologiques et techniques. En effet, la diversité génomique est élevvé. Les populations marines ont souvent des populations très polymorphes et les génomes de références ne couvrent pas toutes les vaiantes, donc moins de lectures vont s'aligner. De ^lus, les répétitions sont abondantes. Les séquences sont divergentes, si la référnce utilisée n'est pas exactement de la même population ou espèce, les divergences gééntiques font baisser le mapping. Enfin, la qualité des lectures et la contamination peuvent influencer de faible résultat de mapping (provenant de virus/bactérie marins). 
    
 
 # Part 5 — Calling SNPs
@@ -257,13 +257,13 @@ vcftools --vcf raw_variants.vcf --freq
 vcftools --vcf raw_variants.vcf --freq
 ```
 ## 3.1) How many SNPs did you call ? 
-#### Après cette première étape, il y a 127 SNPs
+Après cette première étape, il y a 127 SNPs
 
 ## 4)  Using vfctools, filter SNPs, using : vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered. Explain what this command is doing. How many SNPs remain ?
 ```
 vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered
 ```
-#### Après cette étape de filtrage, il ne reste plus que 4 SNPs. Cette commande présente le "mindp" = 5, qui est la profondeur de lecture de au moins 5. PUis, le "max-missing" de 100% correspond au SNP gardés si ils sont génotypés chez tous les indidus. Enfin, le "min-allèle" et le "max-allèle" corespondent aux minimum au maximum d'allèles utilisées qui sont de 2. 
+Après cette étape de filtrage, il ne reste plus que 4 SNPs. Cette commande présente le "mindp" = 5, qui est la profondeur de lecture de au moins 5. PUis, le "max-missing" de 100% correspond au SNP gardés si ils sont génotypés chez tous les indidus. Enfin, le "min-allèle" et le "max-allèle" corespondent aux minimum au maximum d'allèles utilisées qui sont de 2. 
 
 ## 5) Using vfctools, compute the allelic frequence and the FST per sites
 ```
@@ -271,7 +271,7 @@ vcftools --vcf raw_variants.vcf --freq  --out allele_freqs
 vcftools --vcf raw_variants.vcf --weir-fst-pop popbear.txt --weir-fst-pop poprabbit.txt --out fst_pop
 ```
 
-##### Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commande suivante : 
+Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commande suivante : 
 ```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.frq' ~ /home/2025LBISM2/e22402344/
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.vcf' ~ /home/2025LBISM2/e22402344/
@@ -283,10 +283,10 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 
 # Partie 6 - Concept interpretation
 ## 1) What is the difference between coverage and depth of coverage?
-### Le covergae est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. La profondeur de séquencage correspond au pourcentage du génome cible qui a été séquencé au moins une fois. Une couverture plus élevée signifie une plus grande fiabilité. La profondeur et la couverture sont positivement corrélées 
+Le covergae est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. La profondeur de séquencage correspond au pourcentage du génome cible qui a été séquencé au moins une fois. Une couverture plus élevée signifie une plus grande fiabilité. La profondeur et la couverture sont positivement corrélées 
 
 ## 2) Why do RADseq datasets contain many loci with missing data?
-### En RADseq, on réduit le génome pour par séquencer le génome entier mais de manière alétaoire aléatoire.  On utilise les enzymes de restriction qui digèrent une partie spécifique. Le but est de séquencer de part et d’autres de l’enzyme donc seulement les fragments d'ADN qui sont autour des sites de coupes vont etre séquencés. On a aussi une divergence importante du coverage entre les différenets endroits.
+En RADseq, on réduit le génome pour par séquencer le génome entier mais de manière alétaoire aléatoire.  On utilise les enzymes de restriction qui digèrent une partie spécifique. Le but est de séquencer de part et d’autres de l’enzyme donc seulement les fragments d'ADN qui sont autour des sites de coupes vont etre séquencés. On a aussi une divergence importante du coverage entre les différenets endroits.
 
 ## 3) Why is it important to apply SNP filtering before population genomic analyses?
 La filtration garantit que les conclusions biologiques finales sont basées sur de réelles différences génétiques, et non sur des artefacts techniques du processus de séquençage.
