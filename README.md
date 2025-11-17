@@ -407,6 +407,10 @@ Cette figure représente la différenciation génétique (FST) le long d’un g�
 
 ![Graphique de représentation des FST](https://raw.githubusercontent.com/maelyschapis/Bioinfo/6337f416578fe0da48e2269b49fb38f76b4c43c6/R/FST.svg)
 
+
+<img width="437" height="295" alt="image" src="https://github.com/user-attachments/assets/632ed6ed-eb79-4451-adcc-404c70b6747c" />
+
+
 Concernant l’axe X, c'est la position qui correspond aux coordonnées génomiques (sur un contig ou un chromosome). Chaque point est un SNP (ou une fenêtre, selon le fichier utilisé). Concernant l’axe Y, c'est le degré de différenciation génétique entre deux populations. 
 De manière plus générale : 
 - FST ≈ 0 → pas de différenciation
