@@ -390,6 +390,8 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 Le graphique est un histogramme des fréquences alléliques minimales (min) observées par position génomique, après avoir restructuré le fichier .frq. Il y a pour chaque SNP (CHROM + POS), plusieurs allèles possibles, chacun avec une fréquence.
 Chaque SNP est résumé en ne gardant que la fréquence de l’allèle le plus rare (d’où min(FREQ)), puis il y a la visualisation de la répartition de ces minima.
 
+![Graphique de représentation des FST](https://raw.githubusercontent.com/maelyschapis/Bioinfo/f2893c0b1717e7caf9e4638a1baf3141c57cef9c/R/alleles.svg)
+
 Sur la figure, la très forte majorité des SNP ont une fréquence minimale proche de 0. C’est le grand pic autour de 0 dans l’histogramme. Cela signifie que, pour la plupart des variantes, il existe un allèle très rare, avec une fréquence quasi nulle. C’est exactement ce qu’on observe dans des données génomiques réelles :
 - beaucoup d’allèles rares
 - peu d’allèles intermédiaires
@@ -406,10 +408,6 @@ La barre isolée à 0.50 signifie qu’au moins un SNP a deux allèles exactemen
 Cette figure représente la différenciation génétique (FST) le long d’un génome, position par position, telle que calculée avec la méthode de Weir & Cockerham.
 
 ![Graphique de représentation des FST](https://raw.githubusercontent.com/maelyschapis/Bioinfo/6337f416578fe0da48e2269b49fb38f76b4c43c6/R/FST.svg)
-
-
-<img width="437" height="295" alt="image" src="https://github.com/user-attachments/assets/632ed6ed-eb79-4451-adcc-404c70b6747c" />
-
 
 Concernant l’axe X, c'est la position qui correspond aux coordonnées génomiques (sur un contig ou un chromosome). Chaque point est un SNP (ou une fenêtre, selon le fichier utilisé). Concernant l’axe Y, c'est le degré de différenciation génétique entre deux populations. 
 De manière plus générale : 
