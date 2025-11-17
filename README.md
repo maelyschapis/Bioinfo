@@ -5,10 +5,12 @@ pwd
 # Part 1 — Linux basics 
 ## 1) Create a working directory called finalexam on your student account, in your $HOME directory. Copy the dataset from filesender link above.
 
+'''
 kdir finalexam
 scp SRR034310_10pc.fastq /home/2025LBISM2/e22402344/finalexam
 scp Details_Barcode_Population_SRR034310.txt /home/2025LBISM2/e22402344/finalexam
 scp Reference_genome_chrI.fasta /home/2025LBISM2/e22402344/finalexam
+'''
 
 ## 2) Explore file content with bash commands using and report: 
 cat SRR034310_10pc.fastq | head # pour voir à quoi ressemble le fichier
