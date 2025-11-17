@@ -290,7 +290,6 @@ Lee ""samtools flagstat" fournit un résumé complet des alignements dans le fic
 - Number of reads : nombre total de lectures dans le fichier BAM.
 - Number of duplicates : nombre de lectures dupliquées (lorsque l’information est disponible), souvent liées à la PCR ou à la préparation de la librairie.
 
-
 Le mapping correspond au pourcentage d’alignement, c’est-à-dire la proportion de lectures (reads) d’un fichier FASTQ qui ont été correctement alignées sur un génome de référence. En pratique, lorsque nous utilisons samtools flagstat, nous obtenons deux nombres principaux :
 - Nombre total de lectures dans le fichier BAM (toutes les lectures présentes dans le fichier aligné).
 - Nombre de lectures correctement mappées (celles qui se sont alignées de façon fiable sur le génome de référence).
@@ -405,6 +404,8 @@ La barre isolée à 0.50 signifie qu’au moins un SNP a deux allèles exactemen
 
 #### Histogramme pour les FST
 Cette figure représente la différenciation génétique (FST) le long d’un génome, position par position, telle que calculée avec la méthode de Weir & Cockerham.
+
+![Graphique de représentation des FST](https://raw.githubusercontent.com/maelyschapis/Bioinfo/6337f416578fe0da48e2269b49fb38f76b4c43c6/R/FST.svg)
 
 Concernant l’axe X, c'est la position qui correspond aux coordonnées génomiques (sur un contig ou un chromosome). Chaque point est un SNP (ou une fenêtre, selon le fichier utilisé). Concernant l’axe Y, c'est le degré de différenciation génétique entre deux populations. 
 De manière plus générale : 
