@@ -385,7 +385,46 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 ```
 
 ## 6) Visualize in R allele frequencies and FST values
-### Les résultats des graphiques se truvent dans les fichiers joins rendu avec le reste de l'examen. 
+### Les résultats des graphiques se trouvent dans les fichiers joins rendu avec le reste de l'examen. 
+
+#### Histogramme pour les fréquences alléliques
+Le graphique est un histogramme des fréquences alléliques minimales (min) observées par position génomique, après avoir restructuré le fichier .frq. Il y a pour chaque SNP (CHROM + POS), plusieurs allèles possibles, chacun avec une fréquence.
+Chaque SNP est résumé en ne gardant que la fréquence de l’allèle le plus rare (d’où min(FREQ)), puis il y a la visualisation de la répartition de ces minima.
+
+Sur la figure, la très forte majorité des SNP ont une fréquence minimale proche de 0. C’est le grand pic autour de 0 dans l’histogramme. Cela signifie que, pour la plupart des variantes, il existe un allèle très rare, avec une fréquence quasi nulle. C’est exactement ce qu’on observe dans des données génomiques réelles :
+- beaucoup d’allèles rares
+- peu d’allèles intermédiaires
+- encore moins d’allèles à haute fréquence
+
+Deux autres petites barres autour de 0.25 et 0.5. Elles représentent :
+- FREQ ≈ 0.25 → peut correspondre à des SNP trialléliques (3 allèles), où l’allèle le plus rare a f = ~0.25
+- FREQ ≈ 0.50 → un SNP biallélique parfaitement équilibré, où les deux allèles ont f = 0.50
+Ces cas sont beaucoup plus rares.
+
+La barre isolée à 0.50 signifie qu’au moins un SNP a deux allèles exactement à 50/50.
+
+#### Histogramme pour les FST
+Cette figure représente la différenciation génétique (FST) le long d’un génome, position par position, telle que calculée avec la méthode de Weir & Cockerham.
+
+Concernant l’axe X, c'est la position qui correspond aux coordonnées génomiques (sur un contig ou un chromosome). Chaque point est un SNP (ou une fenêtre, selon le fichier utilisé). Concernant l’axe Y, c'est le degré de différenciation génétique entre deux populations. 
+De manière plus générale : 
+- FST ≈ 0 → pas de différenciation
+- FST > 0 → différenciation présente (plus la valeur est élevée, plus elle est forte)
+- FST < 0 → valeurs négatives possibles avec Weir & Cockerham (généralement dues au bruit statistique). Elles ne sont pas biologiquement interprétables ; elles indiquent simplement "FST ≈ 0".
+
+Ici, la distribution des point montre une variabilité du FST le long du génome :
+- La majorité des points sont entre –0.2 et 0.4, ce qui suggère une différenciation faible à modérée entre les populations.
+- Quelques points montent vers 0.6 – 0.9, potentiels sujets à sélection divergente ou zones très différenciées.
+- De nombreux points faibles ou négatifs → régions neutres ou peu polymorphes.
+
+Il est à noter qu'entre 8–12 Mb, on voit un petit “pic” de FST. Cela pourrait être dû à une possible région génomique où les populations diffèrent davantage. Une valeur très haute autour de 20 Mb pourrait quant à elle correspondre :
+- à un locus sous pression de sélection,
+- à un artefact (faible couverture, faible fréquence allélique…).
+
+Finalement, cette figure donne une vue exploratoire de la différenciation génétique des populations le long du génome :
+- Points hauts = différenciation forte, donc candidats à la sélection ou isolation génétique.
+- Points bas/négatifs = pas de différenciation.
+- La distribution irrégulière suggère une différenciation hétérogène à travers le génome.
 
 # Partie 6 - Concept interpretation
 ## 1) What is the difference between coverage and depth of coverage?
