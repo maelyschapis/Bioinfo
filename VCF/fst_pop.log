@@ -1,0 +1,22 @@
+
+VCFtools - 0.1.16
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf raw_variants.vcf
+	--weir-fst-pop popbear.txt
+	--weir-fst-pop poprabbit.txt
+	--keep popbear.txt
+	--keep poprabbit.txt
+	--out fst_pop
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+Keeping individuals in 'keep' list
+After filtering, kept 16 out of 16 Individuals
+Outputting Weir and Cockerham Fst estimates.
+Weir and Cockerham mean Fst estimate: 0.082727
+Weir and Cockerham weighted Fst estimate: 0.20317
+After filtering, kept 127 out of a possible 127 Sites
+Run Time = 0.00 seconds
