@@ -1,9 +1,6 @@
-coucou
-# Créer un fichier finalexam : 
-touch finalexam 
-
+EXAMEN BIOINFORMATIQUE MAÊLYS CHAPIS & MILA TRIPON
 # Vérification du directory
 pwd
-# /home/2025LBISM2/e22400122
+
 
 
