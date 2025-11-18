@@ -291,19 +291,19 @@ samtools flagstat RabbitSlough6_sorted.bam # 64961 & 4862 (7,48%)
 samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264 (7,34%)
 samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100 (7,45%)
 ```
-Le premier chiffre nous donne le nombres totales de reads qui ont passés le controle qualité. 
 
-Lee ""samtools flagstat" fournit un résumé complet des alignements dans le fichier BAM. Les principaux indicateurs sont :
-- % mapped : pourcentage de lectures alignées correctement sur le génome de référence.
+Avec Samtools, nous obtenons deux nombres principaux :
+- Nombre total de lectures qui ont passés le controle qualité. 
+- Nombre de lectures correctement mappées (celles qui se sont alignées de façon fiable sur le génome de référence).
+
+Aucun duplicat n'est détecté
+
+Les "samtools flagstat" fournissent un résumé complet des alignements dans le fichier BAM. Les principaux indicateurs sont :
+- % mapped : pourcentage de lectures alignées correctement sur le génome de référence. Il se calcule ainsi : Mapping (%) = (lectures mappées / lectures totales)×100
 - Number of reads : nombre total de lectures dans le fichier BAM.
 - Number of duplicates : nombre de lectures dupliquées (lorsque l’information est disponible), souvent liées à la PCR ou à la préparation de la librairie.
 
-Le mapping correspond au pourcentage d’alignement, c’est-à-dire la proportion de lectures (reads) d’un fichier FASTQ qui ont été correctement alignées sur un génome de référence. En pratique, lorsque nous utilisons samtools flagstat, nous obtenons deux nombres principaux :
-- Nombre total de lectures dans le fichier BAM (toutes les lectures présentes dans le fichier aligné).
-- Nombre de lectures correctement mappées (celles qui se sont alignées de façon fiable sur le génome de référence).
-
-Le pourcentage de mapping se calcule ainsi : Mapping (%) = (lectures mappées / lectures totales)×100
-
+### 4.2)  Why do marine genomes often produce lower mapping %
 Chez les génomes marins, le pourcentage de mapping est souvent plus faible que pour d’autres organismes, pour plusieurs raisons biologiques et techniques :
 - Diversité génomique élevée :
 Les populations marines présentent un polymorphisme génétique important. Le génome de référence ne représente souvent qu’une seule population ou un seul individu, donc de nombreuses variantes présentes dans les échantillons ne s’aligneront pas correctement.
@@ -314,7 +314,7 @@ Si la référence utilisée n’est pas exactement de la même population ou esp
 - Qualité des lectures et contamination :
 Les lectures de mauvaise qualité peuvent échouer à s’aligner. De plus, dans les échantillons marins, il est courant de trouver des contaminations par des virus, bactéries ou autres organismes marins, ce qui génère des séquences qui ne correspondent pas au génome cible.
 
-Le mapping est donc un indicateur clé de la qualité des données et de la compatibilité entre les lectures et le génome de référence. Les faibles taux de mapping dans les génomes marins sont donc le reflet d’une combinaison de diversité génétique, de répétitions et de facteurs techniques liés à l’échantillonnage et à la qualité des séquences.
+Le mapping est donc un indicateur clé de la qualité des données et de la compatibilité entre les lectures et le génome de référence. Les faibles taux de mapping dans les génomes marins sont le reflet d’une combinaison de diversité génétique, de répétitions et de facteurs techniques liés à l’échantillonnage et à la qualité des séquences.
 
 Lorsqu’on analyse les fichiers BAM après mapping, samtools flagstat fournit parfois le nombre de lectures dupliquées. Les lectures dupliquées sont des séquences identiques présentes plusieurs fois dans le fichier, et elles peuvent apparaître pour plusieurs raisons :
 - Amplification PCR :
@@ -347,7 +347,7 @@ mkdir vcf
 cd vcf
 ```
 
-## 3) Call variants from the two BAM files
+## 3) Call variants from the BAM files
 ```
 bcftools mpileup -Ou -f ../Reference_genome_chrI.fasta ../BearPaw1_sorted.bam ../BearPaw2_sorted.bam ../BearPaw3_sorted.bam ../BearPaw4_sorted.bam ../BearPaw5_sorted.bam ../BearPaw6_sorted.bam ../BearPaw7_sorted.bam ../BearPaw8_sorted.bam ../RabbitSlough1_sorted.bam ../RabbitSlough2_sorted.bam ../RabbitSlough3_sorted.bam ../RabbitSlough4_sorted.bam ../RabbitSlough5_sorted.bam ../RabbitSlough6_sorted.bam ../RabbitSlough7_sorted.bam ../RabbitSlough8_sorted.bam | bcftools call -mv -Ov -o raw_variants.vcf
 
@@ -379,13 +379,13 @@ Après ce filtrage strict, il ne reste que 4 SNPs fiables.
 vcftools --vcf raw_variants.vcf --freq  --out allele_freqs
 vcftools --vcf raw_variants.vcf --weir-fst-pop popbear.txt --weir-fst-pop poprabbit.txt --out fst_pop
 ```
-Cette commande calcule la fréquence de chaque allèle pour tous les SNPs dans chaque échantillon ou population Les résultats sont enregistrés dans un fichier .frq, utile pour les analyses de diversité génétique. 
+Cette commande calcule la fréquence de chaque allèle pour tous les SNPs dans chaque échantillon ou population. Les résultats sont enregistrés dans un fichier .frq, utile pour les analyses de diversité génétique. 
 - weir-fst-pop permet de calculer le FST (indice de différenciation génétique) entre deux populations :
 - popbear.txt : liste des individus de la population BearPaw.
 - poprabbit.txt : liste des individus de la population RabbitSlough.
 - Le fichier de sortie contient le FST pour chaque SNP, indiquant le degré de divergence génétique entre populations.
 
-Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commande suivante : 
+Afin de télélcharger les données sur nos ordinateur de la salle, nous avons utilisées les commandes suivantes : 
 ```
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.frq' ~ /home/2025LBISM2/e22402344/
 scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*.vcf' ~ /home/2025LBISM2/e22402344/
