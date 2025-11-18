@@ -1,1 +1,17 @@
+frq <- read.table("allele_freqs.frq",
+                  header = TRUE,
+                  sep = "\t",
+                  row.names = NULL,
+                  check.names = FALSE)
+
+frq$Freq <- as.numeric(sub(".*:", "", frq$`{ALLELE:FREQ}`))
+
+table(frq$Freq)
+barplot(table(frq$Freq),
+        main = "Distribution des fréquences d'allèles",
+        xlab = "Fréquence",
+        ylab = "Nombre de SNPs",
+        col = "lightblue")
+
+
 
