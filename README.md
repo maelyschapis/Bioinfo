@@ -456,22 +456,24 @@ Finalement, cette figure donne une vue exploratoire de la différenciation gén�
 
 # Partie 6 - Concept interpretation
 ## 1) What is the difference between coverage and depth of coverage?
-Le covergae est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. La profondeur de séquencage correspond au pourcentage du génome cible qui a été séquencé au moins une fois. Une couverture plus élevée signifie une plus grande fiabilité. La profondeur et la couverture sont positivement corrélées 
+Le covergae est le pourcentage du génome cible qui a été séquencé au moins une fois. La profondeur de séquencage est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. Par exemple, une profondeur de "30x" signifie que chaque base a été lue en moyenne 30 fois. Une couverture plus élevée signifie une plus grande fiabilité. 
 
 ## 2) Why do RADseq datasets contain many loci with missing data?
-En RADseq, on réduit le génome pour par séquencer le génome entier mais de manière alétaoire aléatoire.  On utilise les enzymes de restriction qui digèrent une partie spécifique. Le but est de séquencer de part et d’autres de l’enzyme donc seulement les fragments d'ADN qui sont autour des sites de coupes vont etre séquencés. On a aussi une divergence importante du coverage entre les différenets endroits.
+En RADseq, on réduit la complexité du génome en utilisant des enzymes de restriction qui clivent l’ADN à des sites spécifiques. Le but est de séquencer de part et d’autres de l’enzyme donc seulement les fragments d'ADN qui sont autour des sites de coupes. De plus, la couverture n’est pas uniforme : certains loci sont séquencés plus profondément que d’autres. Comme le séquençage est un processus aléatoire, certains fragments peuvent ne pas être suffisamment séquencés, ce qui entraîne des données manquantes à certains loci dans l’ensemble du dataset.
 
 ## 3) Why is it important to apply SNP filtering before population genomic analyses?
 La filtration garantit que les conclusions biologiques finales sont basées sur de réelles différences génétiques, et non sur des artefacts techniques du processus de séquençage.
-Ces erreurs peuvent  etre du à la machine de séquençage en elle même. Cela peut aussi etre du à des erreurs d'alignement. On peut aussi supprimer les sites qui n'ont pas une couverture de séquençage suffisante pour être appelés avec précision.
-
-Peut aussi enlever les allèles qui sont très rares car permet de réduire le bruit et c'est souvent des allèles peut fiable. On pourrait par la suite confondre le bruit technique aux réeeles signatures biologiques.
+Ces erreurs peuvent  etre du à la machine de séquençage en elle même qui peut faire des erreurs de lecture des bases. Cela peut aussi etre du à des erreurs d'alignement. Des séquences issues de régions dupliquées du génome peuvent s'aligner au meme endroit par erreur, créant de faux hétérozygotes.  On peut aussi supprimer les sites qui n'ont pas une couverture de séquençage suffisante pour être appelés avec précision et les allèles qui sont très rares car cela permet de réduire le bruit et c'est souvent des allèles peut fiable. On pourrait par la suite confondre le bruit technique aux réelles signatures biologiques.
 
 ## 4) What is an outlier locus? Give a definition from CM1.
+
+Un locus outlier c'est un marqueur génétique qui présente un niveau de différenciation statistiquement beaucoup plus élevé  que le reste du génome. Il diffère des attendues théoriques neutres. Un locus outlier est supposé etre sous l'influence de la sélection naturelle. 
+
+## 5) Give an example of a marine organism where genomic scans detected islands of differentiation.
+
 Un ilot de différenciation se forme quand une région de génome est sous sélection.
 
-L'espèce Dicentrarchus labrax présente certaines régions sous ilots de différenciation entre la lignée atlantique et la lignée méditerranéenne du bar européen autour de 10 000 000 pb. Ces îlots de différenciation ont été générés par des taux d'introgression variables (flux génique après le contact secondaire) à travers le génome, suite à une période d'isolement géographique - Tine et al 2014
+L'espèce *Dicentrarchus labrax* présente certaines régions sous ilots de différenciation entre la lignée atlantique et la lignée méditerranéenne du bar européen autour de 10 000 000 pb. Ces îlots résultent d'un contact secondaire après une période d'isolement géographique. Lors de ce contact, les flux de gènes ont repris, homogénéisant la majeure partie du génome. Cependant, les régions contenant des gènes impliqués dans l'adaptation locale ou l'isolement reproducteur ont résisté à ce flux de gènes (sélection contre les hybrides), créant ces îlots de haute différenciation.
 
-0638484675
-    Give an example of a marine organism where genomic scans detected islands of differentiation.
-SALMO SALSA/ TRUTTA
+Tine, M., Kuhl, H., Gagnaire, PA. et al. European sea bass genome and its variation provide insights into adaptation to euryhalinity and speciation. Nat Commun 5, 5770 (2014). https://doi.org/10.1038/ncomms6770
+
