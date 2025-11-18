@@ -343,6 +343,10 @@ Impact des duplications sur l’interprétation des données
 
 Remarque pour les génomes marins : Les faibles taux de mapping combinés à des duplications modérées sont fréquents. La diversité génétique et la présence de séquences répétées accentuent ce phénomène, et il est important de les considérer pour éviter des biais dans l’interprétation des données.
 
+C'est le cas par exemple chez *Crassostrea gigas*. Zhang G et al (2012) ont pu voir que le génome de l'huitre est très polymorphe. On peut détecter 1 SNP toutes les 60 à 80 paires de bases. Par conséquence, un logiciel de mapping classique, peut avoir tendance a rejeter la diversité (autorise que quelques erreurs par lecture) et faire chuter le taux de mapping. Environ 36% du génome de *C.gigas* est composé d'éléments répétés. Ces séquences peuvent s'alligner à plusieurs endroits différents et etre encore une fois rejetées, réduisant la confiance dans l'alignement.
+
+Zhang, G., et al. (2012). "The oyster genome reveals stress adaptation and complexity of shell formation." Nature, 490(7418), 49-54.
+
 # Part 5 — Calling SNPs
 Cette partie décrit la détection de SNPs (Single Nucleotide Polymorphisms) à partir des fichiers BAM alignés sur le génome de référence.
 
