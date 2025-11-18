@@ -35,29 +35,33 @@ wc -l < SRR034310_10pc.fastq
 ```
 Résultat : 356412 lignes
 Comme chaque séquence FASTQ occupe 4 lignes (identifiant, séquence, ligne intermédiaire, qualité), on va donc diviser ce nombre par 4 pour avoir le nombre total de séquences.
-
-### 2.2) What is the read length?
-
-36 nucloétides 
 ```
-22402344@ed55:~$ nseq=$((`wc -l < SRR034310_10pc.fastq / 4))
+nseq=$((`wc -l < SRR034310_10pc.fastq / 4))
 e22402344@ed55:~$ echo $nseq
 ```
 Résultat : 89703 séquences
 Cela montre que le fichier contient presque 90 000 lectures, ce qui est suffisant pour effectuer des analyses statistiques fiables.
+
+
+### 2.2) What is the read length?
+
+```
+cat SRR034310_10pc.fastq | head
+```
+Chacune des séquences est composées de 36 nucloétides. 
 
 ### 2.3) How many barcodes are in Details_Barcode_Population_SRR034310?
 ```
 wc -l < Details_Barcode_Population_SRR034310.txt
 ```
 Résultat : 16 barcodes
-Chaque barcode correspond à une population ou à un échantillon différent, ce qui permettra d’identifier l’origine des séquences.
+Chaque barcode correspond à un individu ou à un échantillon différent, ce qui permettra d’identifier l’origine des séquences.
 
 # Part 2 — Quality control 
 ```
 home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
 ```
-Cette commande génère un rapport HTML détaillé sur la qualité des lectures, qui peut être visualisé pour identifier des problèmes éventuels.
+Cette commande permet d'ouvrir le logiciel Fastqc en dehors du terminal. Dans celui-ci nous ouvrons notre fichier de séquences puis génèrons un rapport HTML détaillé sur la qualité des lectures, qui peut être visualisé pour identifier des problèmes éventuels.
 
 ### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
 - Sequence length distribution : La longueur des séquences est uniforme, avec une valeur maximale autour de 36 pb.
@@ -72,10 +76,10 @@ Rapport complet : file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.htm
 
 ### 1.2) which restriction enzyme was used to create these data?
 L’enzyme utilisée pour générer ces données est SbfI.
-Cette information est déduite à partir du pourcentage de nucléotides dans l’onglet "per base sequence content" : la séquence TGCA GG correspond au site de coupure de SbfI.
+Cette information est déduite à partir du pourcentage de chaque nucléotides dans l’onglet "per base sequence content" : la séquence TGCA GG correspond au site de coupure de SbfI.
 
 ### 1.3) What is the 4 nt sequence preceeding the enzyme overhang?
-La séquence précédant le site de l’enzyme de restriction est : TGCA
+La séquence précédant le site de l’enzyme de restriction est un barcode, permettant de reconnaitre notre échantillon. 
 
 # Part 3 — Demultiplexing using barcodes
 
@@ -99,13 +103,13 @@ grep -B1 -A2 "^GGAA" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough6.f
 grep -B1 -A2 "^GGTT" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough7.fastq 
 grep -B1 -A2 "^GGCC" SRR034310_10pc.fastq| sed 's/@SRR/@SRR/g' > RabbitSlough8.fastq 
 ```
-Explication :
+Explications :
 - grep "^BARCODE" permet de sélectionner les séquences commençant par un barcode spécifique.
 - B1 -A2 inclut une ligne avant et deux lignes après le match, correspondant aux quatre lignes de chaque lecture FASTQ (identifiant, séquence, ligne intermédiaire, qualité).
 - sed 's/@SRR/@SRR/g' sert ici à corriger ou standardiser l’entête des séquences.
 - Chaque fichier créé correspond à un échantillon identifié par son barcode, par exemple BearPaw1.fastq pour le barcode CCCC.
 
-## 2)  Nous comptons le nombre de lecture de chaque fichier compter le nombre de reads 
+## 2)  Nous comptons le nombre de lecture de chaque fichier 
 Pour vérifier que le démultiplexage a fonctionné correctement, nous comptons le nombre de lectures de chaque fichier FASTQ :
 ```
 grep "^>SRR" BearPaw1.fastq | wc -l # 15802 lectures
@@ -258,7 +262,7 @@ samtools view -bS RabbitSlough8.sam > RabbitSlough8.bam
 samtools sort RabbitSlough8.bam -o RabbitSlough8_sorted.bam
 samtools index RabbitSlough8_sorted.bam
 ```
-La commande "samtools view -bS" permet de convertire le SAM en BAM. "Samtools sort" permete quant à lui de trier les lectures par position sur le génome pour faciliter les analyses et la visualisation. "Samtools index" crée un fichier index (.bai) qui permet d’accéder rapidement à des positions spécifiques dans le BAM.
+La commande "samtools view -bS" permet de convertire le SAM en BAM. "Samtools sort" permet quant à lui de trier les lectures par position sur le génome pour faciliter les analyses et la visualisation. "Samtools index" crée un fichier index (.bai) qui permet d’accéder rapidement à des positions spécifiques dans le BAM.
 
 Une fois tous les fichiers alignés, triés et indexés, nous les rassemblons dans notre répertoire personnel pour analyses ultérieures :
  ```
@@ -269,24 +273,26 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/*.bam
 Après avoir aligné les séquences sur le génome de référence, il est important d’évaluer la qualité et l’efficacité de l’alignement. Pour cela, nous utilisons samtools flagstat.
 ### 4.1) Mapping stats summarized: % mapped, number of reads, number of duplicates (if info available)
 ```
-samtools flagstat BearPaw1_sorted.bam # 15802 & 1092
-samtools flagstat BearPaw2_sorted.bam # 15554 & 1144
-samtools flagstat BearPaw3_sorted.bam # 15314 & 1192
-samtools flagstat BearPaw4_sorted.bam # 23119 & 1685
-samtools flagstat BearPaw5_sorted.bam # 24149 & 1769
-samtools flagstat BearPaw6_sorted.bam # 67266 & 5413
-samtools flagstat BearPaw7_sorted.bam # 44927 & 3389
-samtools flagstat BearPaw8_sorted.bam # 68112 & 5576
+samtools flagstat BearPaw1_sorted.bam # 15802 & 1092 (6,91%)
+samtools flagstat BearPaw2_sorted.bam # 15554 & 1144 (7,26%)
+samtools flagstat BearPaw3_sorted.bam # 15314 & 1192 (7,78%)
+samtools flagstat BearPaw4_sorted.bam # 23119 & 1685 (7,29%)
+samtools flagstat BearPaw5_sorted.bam # 24149 & 1769 (7,33%)
+samtools flagstat BearPaw6_sorted.bam # 67266 & 5413 (8,05%)
+samtools flagstat BearPaw7_sorted.bam # 44927 & 3389 (7,54%)
+samtools flagstat BearPaw8_sorted.bam # 68112 & 5576 (8,19%)
 
-samtools flagstat RabbitSlough1_sorted.bam # 37965 & 2873
-samtools flagstat RabbitSlough2_sorted.bam # 92388 & 6791
-samtools flagstat RabbitSlough3_sorted.bam # 34596 & 2588
-samtools flagstat RabbitSlough4_sorted.bam # 34087 & 2440
-samtools flagstat RabbitSlough5_sorted.bam # 136019 & 9453
-samtools flagstat RabbitSlough6_sorted.bam # 64961 & 4862
-samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264
-samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100
+samtools flagstat RabbitSlough1_sorted.bam # 37965 & 2873 (7,57%)
+samtools flagstat RabbitSlough2_sorted.bam # 92388 & 6791 (7,35%)
+samtools flagstat RabbitSlough3_sorted.bam # 34596 & 2588 (7,48%)
+samtools flagstat RabbitSlough4_sorted.bam # 34087 & 2440 (7,16%)
+samtools flagstat RabbitSlough5_sorted.bam # 136019 & 9453 (6,95%)
+samtools flagstat RabbitSlough6_sorted.bam # 64961 & 4862 (7,48%)
+samtools flagstat RabbitSlough7_sorted.bam # 98983 & 7264 (7,34%)
+samtools flagstat RabbitSlough8_sorted.bam # 5538 & 4100 (7,45%)
 ```
+Le premier chiffre nous donne le nombres totales de reads qui ont passés le controle qualité. 
+
 Lee ""samtools flagstat" fournit un résumé complet des alignements dans le fichier BAM. Les principaux indicateurs sont :
 - % mapped : pourcentage de lectures alignées correctement sur le génome de référence.
 - Number of reads : nombre total de lectures dans le fichier BAM.
