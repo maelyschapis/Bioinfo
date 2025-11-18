@@ -1,4 +1,4 @@
-EXAMEN BIOINFORMATIQUE MAËlLYS CHAPIS & MILA TRIPON
+EXAMEN BIOINFORMATIQUE MAËLYS CHAPIS & MILA TRIPON
 
 Ce dépôt contient l’ensemble du travail réalisé pour l’examen de bioinformatique, incluant la préparation des fichiers, le contrôle qualité des données et l’analyse des séquences.
 
@@ -14,7 +14,7 @@ Ensuite, nous créons un dossier finalexam pour stocker toutes les données de l
 ```
 kdir finalexam
 ```
-Nous copions ensuite les fichiers nécessaires depuis le serveur filesender :
+Nous copions ensuite les fichiers nécessaires depuis le serveur filesender, en indiquant dans un premier lieu le fichier puis l'adresse d'arrivée souhaitée :
 ```
 scp SRR034310_10pc.fastq /home/2025LBISM2/e22402344/finalexam
 scp Details_Barcode_Population_SRR034310.txt /home/2025LBISM2/e22402344/finalexam
@@ -34,9 +34,11 @@ Cette commande affiche les premières lignes du fichier FASTQ pour vérifier le 
 wc -l < SRR034310_10pc.fastq 
 ```
 Résultat : 356412 lignes
-Comme chaque séquence FASTQ occupe 4 lignes (identifiant, séquence, ligne intermédiaire, qualité), cela permet de calculer le nombre total de séquences.
+Comme chaque séquence FASTQ occupe 4 lignes (identifiant, séquence, ligne intermédiaire, qualité), on va donc diviser ce nombre par 4 pour avoir le nombre total de séquences.
 
 ### 2.2) What is the read length?
+
+36 nucloétides 
 ```
 22402344@ed55:~$ nseq=$((`wc -l < SRR034310_10pc.fastq / 4))
 e22402344@ed55:~$ echo $nseq
