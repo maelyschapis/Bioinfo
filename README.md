@@ -395,22 +395,23 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 ### Les résultats des graphiques se trouvent dans les fichiers joins rendu avec le reste de l'examen. 
 
 #### Histogramme pour les fréquences alléliques
-Le graphique est un histogramme des fréquences alléliques minimales (min) observées par position génomique, après avoir restructuré le fichier .frq. Il y a pour chaque SNP (CHROM + POS), plusieurs allèles possibles, chacun avec une fréquence.
-Chaque SNP est résumé en ne gardant que la fréquence de l’allèle le plus rare (d’où min(FREQ)), puis il y a la visualisation de la répartition de ces minima.
 
-![Graphique de représentation des FST](https://raw.githubusercontent.com/maelyschapis/Bioinfo/f2893c0b1717e7caf9e4638a1baf3141c57cef9c/R/alleles.svg)
+Le graphique est un barplot des fréquences alléliques observées par position génomique, après avoir restructuré le fichier .frq. Il y a pour chaque SNP (CHROM + POS), plusieurs allèles possibles, chacun avec une fréquence. La fréquence de un des allèles est représentés. 
 
-Sur la figure, la très forte majorité des SNP ont une fréquence minimale proche de 0. C’est le grand pic autour de 0 dans l’histogramme. Cela signifie que, pour la plupart des variantes, il existe un allèle très rare, avec une fréquence quasi nulle. C’est exactement ce qu’on observe dans des données génomiques réelles :
-- beaucoup d’allèles rares
-- peu d’allèles intermédiaires
-- encore moins d’allèles à haute fréquence
 
-Deux autres petites barres autour de 0.25 et 0.5. Elles représentent :
-- FREQ ≈ 0.25 → peut correspondre à des SNP trialléliques (3 allèles), où l’allèle le plus rare a f = ~0.25
-- FREQ ≈ 0.50 → un SNP biallélique parfaitement équilibré, où les deux allèles ont f = 0.50
-Ces cas sont beaucoup plus rares.
+![Graphique de représentation des FST](https://github.com/maelyschapis/Bioinfo/blob/main/R/Frequence.svg)
 
-La barre isolée à 0.50 signifie qu’au moins un SNP a deux allèles exactement à 50/50.
+La distribution des fréquences alléliques montre que la majorité des SNPs présents dans l’échantillon sont monomorphes, et ne présentent aucune variation. 12 SNPs ont une fréquence allélique égale à 1, ce qui indique que l’allèle alternatif est fixé et qu’aucune variation n’est observée à ces positions.
+
+À l’inverse, seuls quatre SNPs sont polymorphes : un SNP présente une fréquence de 0,25, deux une fréquence de 0,5 et un une fréquence de 0,75. On a donc la présence de variation génétique ponctuelle, mais qui reste minoritaire dans l’ensemble du jeu de données.
+
+Ces fréquences correspondent à différents niveaux de polymorphisme :
+f = 0.25 → l’allèle majoritaire représente 75 % des chromosomes observés
+f = 0.5 → les deux allèles sont présents en proportions égales (SNP biallélique parfaitement équilibré)
+f = 0.75 → un allèle majoritaire domine, mais un second allèle est encore présent
+
+La présence de ces quelques SNPs polymorphes montre que l’échantillon contient un peu de diversité génétique, mais la forte proportion de SNPs à fréquence = 1 indique une variabilité globale faible.
+
 
 #### Histogramme pour les FST
 Cette figure représente la différenciation génétique (FST) le long d’un génome, position par position, telle que calculée avec la méthode de Weir & Cockerham.
