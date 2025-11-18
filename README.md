@@ -70,6 +70,8 @@ Cette commande permet d'ouvrir le logiciel Fastqc en dehors du terminal. Dans ce
 - Quality drop at 5' and 3' ends : Le graphique Per base sequence quality montre la qualité moyenne à chaque position des lectures (de la base 1 à 36).La qualité des séquences est globalement bonne entre 11 et 22 pb, mais on observe une baisse aux extrémités. En général, un score Phred au-dessus de 28 (zone verte) est bon. Si la courbe tombe dans l'orange ou le rouge, cela signifie que la machine de séquençage a fait beaucoup d'erreurs en lisant ces bases. Sur des lectures aussi courtes (36bp), une mauvaise qualité peut rendre les données difficiles à utiliser.
 
 - Présence d’adaptateurs : Aucun adaptateur détecté.
+  
+<img width="1132" height="817" alt="adapter content" src="https://github.com/user-attachments/assets/e04bf229-a92c-47da-be2e-1b558daeae47" />
 
 - Overrepresented sequences : Trois séquences sont sur-représentées dans le fichier, ce qui peut indiquer des biais techniques (amplification PCR excessive) ou biologiques (certains gènes sont très exprimés).
 
