@@ -64,19 +64,22 @@ home/2025LBISM2/e22402344/fastqc_v0.12.1/FastQC/./fastqc $1
 Cette commande permet d'ouvrir le logiciel Fastqc en dehors du terminal. Dans celui-ci nous ouvrons notre fichier de séquences puis génèrons un rapport HTML détaillé sur la qualité des lectures, qui peut être visualisé pour identifier des problèmes éventuels.
 
 ### 1.1) Describe : sequence length distribution, quality drop at 5' and 3' ends of reads (if any), presence of adapters and overrepresented sequences
-- Sequence length distribution : La longueur des séquences est uniforme, avec une valeur maximale autour de 36 pb.
 
-- Quality drop at 5' and 3' ends : La qualité des séquences est globalement bonne entre 11 et 22 pb, mais on observe une baisse aux extrémités.
+- Sequence length distribution : La longueur des séquences est uniforme, avec une valeur de 36 pb.
+
+- Quality drop at 5' and 3' ends : Le graphique Per base sequence quality montre la qualité moyenne à chaque position des lectures (de la base 1 à 36).La qualité des séquences est globalement bonne entre 11 et 22 pb, mais on observe une baisse aux extrémités. En général, un score Phred au-dessus de 28 (zone verte) est bon. Si la courbe tombe dans l'orange ou le rouge, cela signifie que la machine de séquençage a fait beaucoup d'erreurs en lisant ces bases. Sur des lectures aussi courtes (36bp), une mauvaise qualité peut rendre les données difficiles à utiliser.
 
 - Présence d’adaptateurs : Aucun adaptateur détecté.
 
-- Overrepresented sequences : Trois séquences sont sur-représentées dans le fichier, ce qui peut indiquer des biais techniques ou biologiques.
+- Overrepresented sequences : Trois séquences sont sur-représentées dans le fichier, ce qui peut indiquer des biais techniques (amplification PCR excessive) ou biologiques (certains gènes sont très exprimés).
 
 Rapport complet : file:///home/2025LBISM2/e22402344/qc/SRR034310_10pc_fastqc.html
 
 ### 1.2) which restriction enzyme was used to create these data?
 L’enzyme utilisée pour générer ces données est SbfI.
 Cette information est déduite à partir du pourcentage de chaque nucléotides dans l’onglet "per base sequence content" : la séquence TGCA GG correspond au site de coupure de SbfI.
+
+mettre schéma
 
 ### 1.3) What is the 4 nt sequence preceeding the enzyme overhang?
 La séquence précédant le site de l’enzyme de restriction est un barcode, permettant de reconnaitre notre échantillon. 
