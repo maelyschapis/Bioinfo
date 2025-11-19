@@ -1,3 +1,4 @@
+### POur les SNPs
 frq <- read.table("allele_freqs.frq",
                   header = TRUE,
                   sep = "\t",
@@ -12,6 +13,21 @@ barplot(table(frq$Freq),
         xlab = "Fréquence",
         ylab = "Nombre de SNPs",
         col = "lightblue")
+
+
+### Pour les FST
+# Charger le fichier FST
+fst <- read.table("fst_pop.txt.weir.fst", header = TRUE)
+
+# Enlever les valeurs manquantes NA
+fst <- fst[!is.na(fst$WEIR_AND_COCKERHAM_FST), ]
+
+# Tracer les points FST par position
+plot(fst$POS, fst$WEIR_AND_COCKERHAM_FST,
+     main = "FST par position génomique",
+     xlab = "Position",
+     ylab = "FST",
+     pch = 20, cex = 0.7)
 
 
 
