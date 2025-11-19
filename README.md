@@ -146,7 +146,7 @@ Explication :
 - wc -l compte le nombre de lignes correspondantes, soit le nombre total de lectures dans le fichier.
 - Cela permet de s’assurer que toutes les séquences ont été correctement assignées à chaque échantillon.
 
-## 3) Nous enlevons les 4 premiers nucléotides qui correpsondent aux barcodes : 
+## 3) Nous enlevons les 4 premiers nucléotides qui correspondent aux barcodes : 
 Les quatre premiers nucléotides de chaque séquence correspondent au barcode. Nous les retirons avec seqtk pour préparer les séquences pour les analyses ultérieures :
 ```
 seqtk trimfq -b 4 BearPaw1.fastq > BearPaw1trim.fastq
