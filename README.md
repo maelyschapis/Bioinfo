@@ -382,7 +382,7 @@ Après cette étape, nous obtenons 127 SNPs dans le fichier raw_variants.vcf.
 ```
 vcftools --vcf raw_variants.vcf --minDP 5 --max-missing 1 --min-alleles 2 --max-alleles 2 --recode --out filtered
 ```
-Concernant les comamndes utilisées : 
+Concernant les commandes utilisées : 
 - minDP 5 : conserve seulement les SNPs dont la profondeur de lecture est d’au moins 5, pour s’assurer que la variation est bien supportée par plusieurs lectures.
 - max-missing 1 : conserve uniquement les SNPs présents chez tous les individus (100% des individus génotypés).
 - min-alleles 2 et --max-alleles 2 : conserve uniquement les SNPs bi-alloéliques, c’est-à-dire avec exactement deux variantes détectées.
