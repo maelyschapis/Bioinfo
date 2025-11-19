@@ -124,22 +124,22 @@ Explications :
 ## 2)  Nous comptons le nombre de lecture de chaque fichier 
 Pour vérifier que le démultiplexage a fonctionné correctement, nous comptons le nombre de lectures de chaque fichier FASTQ :
 ```
-grep "^>SRR" BearPaw1.fastq | wc -l # 15802 lectures
-grep "^>SRR" BearPaw2.fastq | wc -l # 15754 lectures
-grep "^>SRR" BearPaw3.fastq | wc -l # 15314 lectures
-grep "^>SRR" BearPaw4.fastq | wc -l # 23119 lectures
-grep "^>SRR" BearPaw5.fastq | wc -l # 24149 lectures
-grep "^>SRR" BearPaw6.fastq | wc -l # 67266 lectures
-grep "^>SRR" BearPaw7.fastq | wc -l # 44927 lectures
-grep "^>SRR" BearPaw8.fastq | wc -l # 68112 lectures
-grep "^>SRR" RabbitSlough1.fastq | wc -l # 37965 lectures
-grep "^>SRR" RabbitSlough2.fastq | wc -l # 92388 lectures
-grep "^>SRR" RabbitSlough3.fastq | wc -l # 34596 lectures
-grep "^>SRR" RabbitSlough4.fastq | wc -l # 34087 lectures
-grep "^>SRR" RabbitSlough5.fastq | wc -l # 36019 lectures
-grep "^>SRR" RabbitSlough6.fastq | wc -l # 64961 lectures
-grep "^>SRR" RabbitSlough7.fastq | wc -l # 98983 lectures
-grep "^>SRR" RabbitSlough8.fastq | wc -l # 55038 lectures
+grep "^@SRR" BearPaw1.fastq | wc -l # 15802 lectures
+grep "^@SRR" BearPaw2.fastq | wc -l # 15754 lectures
+grep "^@SRR" BearPaw3.fastq | wc -l # 15314 lectures
+grep "^@SRR" BearPaw4.fastq | wc -l # 23119 lectures
+grep "^@SRR" BearPaw5.fastq | wc -l # 24149 lectures
+grep "^@SRR" BearPaw6.fastq | wc -l # 67266 lectures
+grep "^@SRR" BearPaw7.fastq | wc -l # 44927 lectures
+grep "^@SRR" BearPaw8.fastq | wc -l # 68112 lectures
+grep "^@SRR" RabbitSlough1.fastq | wc -l # 37965 lectures
+grep "^@SRR" RabbitSlough2.fastq | wc -l # 92388 lectures
+grep "^@SRR" RabbitSlough3.fastq | wc -l # 34596 lectures
+grep "^@SRR" RabbitSlough4.fastq | wc -l # 34087 lectures
+grep "^@SRR" RabbitSlough5.fastq | wc -l # 36019 lectures
+grep "^@SRR" RabbitSlough6.fastq | wc -l # 64961 lectures
+grep "^@SRR" RabbitSlough7.fastq | wc -l # 98983 lectures
+grep "^@SRR" RabbitSlough8.fastq | wc -l # 55038 lectures
 ```
 Explication :
 - grep "^>SRR" recherche les lignes d’identifiant de chaque séquence.
