@@ -415,7 +415,7 @@ scp 'tp183376@core.cluster.france-bioinformatique.fr:/shared/home/tp183376/vcf/*
 Le graphique est un barplot des fréquences alléliques observées par position génomique, après avoir restructuré le fichier .frq. Il y a pour chaque SNP (CHROM + POS), plusieurs allèles possibles, chacun avec une fréquence. La fréquence de un des allèles est représentés. 
 
 
-![Graphique de représentation des FST](https://github.com/maelyschapis/Bioinfo/blob/main/R/Frequence.svg)
+![Graphique de représentation des FST](https://github.com/maelyschapis/Bioinfo/blob/main/R/Nombre%20FST.png?raw=true)
 
 La distribution des fréquences alléliques montre que la majorité des SNPs présents dans l’échantillon sont monomorphes, et ne présentent aucune variation. 12 SNPs ont une fréquence allélique égale à 1, ce qui indique que l’allèle alternatif est fixé et qu’aucune variation n’est observée à ces positions.
 
