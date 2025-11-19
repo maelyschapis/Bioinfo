@@ -456,7 +456,7 @@ Finalement, cette figure donne une vue exploratoire de la différenciation gén�
 
 # Partie 6 - Concept interpretation
 ## 1) What is the difference between coverage and depth of coverage?
-Le covergae est le pourcentage du génome cible qui a été séquencé au moins une fois. La profondeur de séquencage est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. Par exemple, une profondeur de "30x" signifie que chaque base a été lue en moyenne 30 fois. Une couverture plus élevée signifie une plus grande fiabilité. 
+Le coverage est le pourcentage du génome cible qui a été séquencé au moins une fois. La profondeur de séquencage est le ratio du nombre totales de bases obtenus sur la taille du génome entier. Donc combien de fois, en moyenne, chaque base du génome a été lue. Par exemple, une profondeur de "30x" signifie que chaque base a été lue en moyenne 30 fois. Une couverture plus élevée signifie une plus grande fiabilité. 
 
 ## 2) Why do RADseq datasets contain many loci with missing data?
 En RADseq, on réduit la complexité du génome en utilisant des enzymes de restriction qui clivent l’ADN à des sites spécifiques. Le but est de séquencer de part et d’autres de l’enzyme donc seulement les fragments d'ADN qui sont autour des sites de coupes. De plus, la couverture n’est pas uniforme : certains loci sont séquencés plus profondément que d’autres. Comme le séquençage est un processus aléatoire, certains fragments peuvent ne pas être suffisamment séquencés, ce qui entraîne des données manquantes à certains loci dans l’ensemble du dataset.
